@@ -15,8 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.fk.randomalarm.presentation.HomeScreen
 import com.fk.randomalarm.domain.entity.Routes
+import com.fk.randomalarm.presentation.HomeScreen
 import com.fk.randomalarm.presentation.SetAlarmScreen
 import com.fk.randomalarm.ui.theme.RandomAlarmTheme
 
@@ -28,13 +28,15 @@ class MainActivity : ComponentActivity() {
             val navController = rememberNavController()
 
             RandomAlarmTheme {
-                Scaffold(
-                    floatingActionButton = {
-                        FloatingActionButton(onClick = { navController.navigate(Routes.SetAlarm.route) })  {
-                            Icon(Icons.Filled.Add, contentDescription = "Add")
+                Scaffold(floatingActionButton = {
+                    FloatingActionButton(onClick = {
+                        navController.navigate(Routes.SetAlarm.route) {
+                            launchSingleTop = true
                         }
+                    }) {
+                        Icon(Icons.Filled.Add, contentDescription = "Add")
                     }
-                ) { innerPadding ->
+                }) { innerPadding ->
                     NavHost(
                         navController = navController,
                         startDestination = "Home",
@@ -42,7 +44,7 @@ class MainActivity : ComponentActivity() {
                             .padding(innerPadding)
                             .fillMaxSize()
                     ) {
-                        composable(Routes.Home.route) { HomeScreen() }
+                        composable(Routes.Home.route) { HomeScreen(navController) }
                         composable(Routes.SetAlarm.route) { SetAlarmScreen() }
                     }
                 }
